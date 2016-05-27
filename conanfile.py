@@ -14,25 +14,22 @@ class HiredisConan(ConanFile):
     default_options = "shared=False"
     url="http://github.com/dwerner/conan-hiredis"
     license="https://github.com/google/googletest/blob/master/googletest/LICENSE"
+    zip_name = "v%s.zip" % version
+    unzipped_name = "hiredis-%s" % version
 
     def source(self):
-        zip_name = "v%s.zip" % self.version
-        url = "https://github.com/redis/hiredis/archive/" % zip_name
-        download(url, zip_name)
-        unzip(zip_name)
-        os.unlink(zip_name)
+        url = "https://github.com/redis/hiredis/archive/%s" % self.zip_name
+        download(url, self.zip_name)
+        unzip(self.zip_name)
+        os.unlink(self.zip_name)
 
     def build(self):
-        if self.settings.os == "Windows":
-            self.run("IF not exist _build mkdir _build")
-        else:
-            self.run("mkdir _build")
-        cd_build = "cd _build"
-        self.run("%s && make" % (cd_build))
+        cd_build = "cd %s" % self.unzipped_name
+        self.run("%s && make" % cd_build)
 
     def package(self):
         # Copying headers
-        self.copy(pattern="*.h", dst="include", src=".", keep_path=false)
+        self.copy(pattern="*.h", dst="include", src=".", keep_path=False)
 
         # Copying static and dynamic libs
         self.copy(pattern="*.a", dst="lib", src=".", keep_path=False)
