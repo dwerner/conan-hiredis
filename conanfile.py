@@ -29,6 +29,10 @@ class HiredisConan(ConanFile):
         self.run("%s && make" % cd_build)
 
     def package(self):
+
+        if self.settings.os == "Macos" and self.options.shared:
+            self.run("bash ./change_dylib_names.sh")
+
         # Copy findHiredis script into project
         self.copy("FindHiredis.cmake", ".", ".")
 
