@@ -14,7 +14,7 @@ class HiredisConan(ConanFile):
     default_options = "shared=False"
     url="http://github.com/dwerner/conan-hiredis"
     license="https://github.com/google/googletest/blob/master/googletest/LICENSE"
-    exports="FindHiredis.cmake"
+    exports="FindHiredis.cmake", "change_dylib_names.sh"
     zip_name = "v%s.zip" % version
     unzipped_name = "hiredis-%s" % version
 
